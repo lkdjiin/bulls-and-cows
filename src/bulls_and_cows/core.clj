@@ -1,18 +1,11 @@
 (ns bulls-and-cows.core
   (:require [clojure.string :as s]
-            [bulls-and-cows.result :as result])
+            [bulls-and-cows.result :as result]
+            [bulls-and-cows.secret :refer :all]
+            [bulls-and-cows.allowed-chars :refer :all])
   (:gen-class))
 
 (declare format-result padding allowed-chars? distinct-chars? valid-size?)
-
-(def allowed-chars ["0" "1" "2" "3" "4" "5" "6" "7" "8" "9"])
-
-; Secret part
-
-(defn random-secret
-  "Returns a random sequence of 4 unique allowed-chars"
-  []
-  (take 4 (shuffle allowed-chars)))
 
 ; Output part
 
