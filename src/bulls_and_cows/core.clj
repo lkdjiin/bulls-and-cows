@@ -1,25 +1,12 @@
 (ns bulls-and-cows.core
   (:require [clojure.string :as s]
             [bulls-and-cows.result :as result]
+            [bulls-and-cows.output :as out]
             [bulls-and-cows.secret :refer :all]
             [bulls-and-cows.allowed-chars :refer :all])
   (:gen-class))
 
-(declare format-result padding allowed-chars? distinct-chars? valid-size?)
-
-; Output part
-
-(defn format-line
-  "Returns a presentation string"
-  [turn guess result]
-  (str padding turn " - " (s/join guess) " - " (format-result result)))
-
-(def padding (s/join (repeat 20 " ")))
-
-(defn format-result
-  "Returns a presentation string"
-  [result]
-  (str (:bulls result) "B " (:cows result) "C"))
+(declare allowed-chars? distinct-chars? valid-size?)
 
 ; Input part
 
@@ -63,7 +50,7 @@
     (println secret)
     (loop [turn 1]
       (let [guess (do-turn)]
-        (println (format-line turn guess (result/bulls-and-cows secret guess)))
+        (println (out/format-line turn guess (result/bulls-and-cows secret guess)))
         (if (= guess secret)
           (println "You win!")
           (recur (inc turn)))))))
