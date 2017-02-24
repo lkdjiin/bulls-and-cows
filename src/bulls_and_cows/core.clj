@@ -2,34 +2,10 @@
   (:require [clojure.string :as s]
             [bulls-and-cows.result :as result]
             [bulls-and-cows.output :as out]
+            [bulls-and-cows.input :as inp]
             [bulls-and-cows.secret :refer :all]
             [bulls-and-cows.allowed-chars :refer :all])
   (:gen-class))
-
-(declare allowed-chars? distinct-chars? valid-size?)
-
-; Input part
-
-(defn get-guess
-  [raw-input]
-  (s/split (s/replace raw-input #" " "") #""))
-
-(defn guess-valid?
-  "Returns true if the guess entry is valid"
-  [guess]
-  (and (allowed-chars? guess) (distinct-chars? guess) (valid-size? guess)))
-
-(defn allowed-chars?
-  [guess]
-  (every? #(.contains allowed-chars %) guess))
-
-(defn distinct-chars?
-  [guess]
-  (apply distinct? guess))
-
-(defn valid-size?
-  [guess]
-  (= 4 (count guess)))
 
 ; Game logic part
 
@@ -38,8 +14,8 @@
   []
   (print "Your guess? ")
   (flush)
-  (let [current (get-guess (read-line))]
-    (if (guess-valid? current)
+  (let [current (inp/get-guess (read-line))]
+    (if (inp/guess-valid? current)
       current
       (do-turn))))
 
