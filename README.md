@@ -14,6 +14,9 @@ TODO
     $ cd bulls-and-cows
     $ lein run
 
+Alternatively, call `lein run` with any args to enter debug mode (ie `lein run
+debug`). Debug mode prints the secret at the beginning of a game ;)
+
 TODO
 
     $ java -jar bulls-and-cows-0.1.0-standalone.jar [args]

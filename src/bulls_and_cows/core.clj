@@ -7,7 +7,8 @@
             [bulls-and-cows.allowed-chars :refer :all])
   (:gen-class))
 
-; Game logic part
+(def debug-on true)
+(def debug-off false)
 
 (defn do-turn
   "This is a single turn in a game"
@@ -21,9 +22,9 @@
 
 (defn game
   "This is a complete game"
-  []
+  [debug-mode]
   (let [secret (random-secret)]
-    (println secret)
+    (when debug-mode (println secret))
     (loop [turn 1]
       (let [guess (do-turn)]
         (println (out/format-line turn guess (result/bulls-and-cows secret guess)))
@@ -32,9 +33,13 @@
           (recur (inc turn)))))))
 
 (defn -main
+  "If called with any args, run in debug-mode ON, that is print the secret
+  at the beginning of a game."
   [& args]
   (loop []
-    (game)
+    (if args
+      (game debug-on)
+      (game debug-off))
     (println "Play again? y/n")
     (if (= "y" (read-line))
       (recur)
