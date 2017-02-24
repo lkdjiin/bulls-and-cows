@@ -1,11 +1,9 @@
 (ns bulls-and-cows.core
-  (:require [clojure.string :as s])
+  (:require [clojure.string :as s]
+            [bulls-and-cows.result :as result])
   (:gen-class))
 
-(use '[clojure.set :only [intersection]])
-
-(declare bulls cows format-result padding allowed-chars? distinct-chars?
-         valid-size?)
+(declare format-result padding allowed-chars? distinct-chars? valid-size?)
 
 (def allowed-chars ["0" "1" "2" "3" "4" "5" "6" "7" "8" "9"])
 
@@ -15,31 +13,6 @@
   "Returns a random sequence of 4 unique allowed-chars"
   []
   (take 4 (shuffle allowed-chars)))
-
-; Computing result part
-
-(defn bulls-and-cows
-  "Returns number of bulls and number of cows"
-  [secret guess]
-  {:bulls (bulls secret guess) :cows (cows secret guess)})
-
-(defn bulls
-  "Returns the number of bulls (good char/good place)"
-  [secret guess]
-  (loop [counter 0, a secret, b guess]
-    (if (empty? a)
-      counter
-      (recur
-        (if (= (first a) (first b))
-          (inc counter)
-          counter)
-        (rest a)
-        (rest b)))))
-
-(defn cows
-  "Returns the number of cows (good char/bad place)"
-  [secret guess]
-  (- (count (intersection (set secret) (set guess))) (bulls secret guess)))
 
 ; Output part
 
@@ -97,7 +70,7 @@
     (println secret)
     (loop [turn 1]
       (let [guess (do-turn)]
-        (println (format-line turn guess (bulls-and-cows secret guess)))
+        (println (format-line turn guess (result/bulls-and-cows secret guess)))
         (if (= guess secret)
           (println "You win!")
           (recur (inc turn)))))))
